@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Halden Studio — Architecture & Interiors</title>
-<meta name="description" content="Halden Studio designs coastal homes and the interiors inside them, from the first sketch to the last cushion.">
+<meta name="description" content="Halden Studio designs and builds homes and the interiors inside them, from the first sketch to the last cushion.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -191,11 +191,11 @@ footer{background:var(--dark);color:var(--on-dark);padding:56px var(--pad) 32px}
     <div class="hero__shade"></div>
 
     <div class="beat" data-beat="0">
-      <h1>Homes that <em>belong</em> where they stand.</h1>
-      <p>Architecture and interiors for coastal living, designed from the site outward.</p>
+      <h1>Every home starts with a <em>plan.</em></h1>
+      <p>Architecture and interiors, designed and built by one team from the ground up.</p>
     </div>
     <div class="beat beat--right" data-beat="1">
-      <h2>Every line drawn for the <em>light</em> it catches.</h2>
+      <h2>Built one wall at a time, <em>checked</em> at every step.</h2>
     </div>
     <div class="beat beat--center" data-beat="2">
       <h2>From the first sketch to the <em>last cushion.</em></h2>
@@ -290,7 +290,7 @@ footer{background:var(--dark);color:var(--on-dark);padding:56px var(--pad) 32px}
   </div>
   <div class="foot__small">
     <span>Concept site designed and built by Bereket Mengaw</span>
-    <span>Footage: Mixkit (free licence)</span>
+    <span>Construction footage: <a href="https://commons.wikimedia.org/wiki/File:Structural_insulated_panel_house_construction_in_7_minutes_-_%D0%AD%D0%BA%D0%BE_%D0%A1%D0%B8%D1%82%D0%B8_-_Russia.webm" target="_blank" rel="noopener">Эко Сити</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>, edited · Photos: Mixkit</span>
   </div>
 </footer>
 
@@ -301,7 +301,7 @@ gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- frame sequence ---------- */
-const FRAMES = 176;
+const FRAMES = 178;
 const src = i => `frames/f${String(i + 1).padStart(3, '0')}.webp`;
 const canvas = document.getElementById('seq');
 const ctx = canvas.getContext('2d');
@@ -320,7 +320,8 @@ function draw(i) {
   const cw = canvas.width, ch = canvas.height;
   const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
   const w = img.naturalWidth * s, h = img.naturalHeight * s;
-  ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+  const fx = ch > cw ? 0.68 : 0.5; // portrait screens: keep the house in frame
+  ctx.drawImage(img, (cw - w) * fx, (ch - h) / 2, w, h);
 }
 
 // load first frame fast, then the rest, and report progress
