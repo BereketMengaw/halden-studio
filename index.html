@@ -140,6 +140,13 @@ footer{background:var(--dark);color:var(--on-dark);padding:56px var(--pad) 32px}
 
 .reveal{opacity:0;transform:translateY(40px)}
 
+@media (min-aspect-ratio:9/10){
+  .hero__shade{background:linear-gradient(90deg,rgba(20,18,15,0) 0%,rgba(20,18,15,0) 47%,rgba(20,18,15,.35) 48%,rgba(20,18,15,0) 60%),linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,0) 20%)}
+  .beat,.beat--right,.beat--center{right:auto;width:42vw;text-align:left;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+  .beat h1,.beat h2{font-size:clamp(40px,5.4vw,92px)}
+  .beat--right h2,.beat--right p,.beat--center h2,.beat--center p{margin-left:0;margin-right:0}
+  .scroll-cue{left:24vw}
+}
 @media (max-width:860px){
   .nav__links{display:none}
   .intro__grid,.contact{grid-template-columns:1fr}
@@ -191,11 +198,11 @@ footer{background:var(--dark);color:var(--on-dark);padding:56px var(--pad) 32px}
     <div class="hero__shade"></div>
 
     <div class="beat" data-beat="0">
-      <h1>Every home starts with a <em>plan.</em></h1>
-      <p>Architecture and interiors, designed and built by one team from the ground up.</p>
+      <h1>Every room starts as a <em>shell.</em></h1>
+      <p>Architecture and interiors, designed by one team from the bare walls up.</p>
     </div>
     <div class="beat beat--right" data-beat="1">
-      <h2>Built one wall at a time, <em>checked</em> at every step.</h2>
+      <h2>We design every piece before it <em>moves in.</em></h2>
     </div>
     <div class="beat beat--center" data-beat="2">
       <h2>From the first sketch to the <em>last cushion.</em></h2>
@@ -290,7 +297,7 @@ footer{background:var(--dark);color:var(--on-dark);padding:56px var(--pad) 32px}
   </div>
   <div class="foot__small">
     <span>Concept site designed and built by Bereket Mengaw</span>
-    <span>Construction footage: <a href="https://commons.wikimedia.org/wiki/File:Structural_insulated_panel_house_construction_in_7_minutes_-_%D0%AD%D0%BA%D0%BE_%D0%A1%D0%B8%D1%82%D0%B8_-_Russia.webm" target="_blank" rel="noopener">Эко Сити</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>, edited · Photos: Mixkit</span>
+    <span>Interior animation via Pinterest (@luxuryhomes0254) · Photos: Mixkit</span>
   </div>
 </footer>
 
@@ -301,7 +308,7 @@ gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- frame sequence ---------- */
-const FRAMES = 178;
+const FRAMES = 132;
 const src = i => `frames/f${String(i + 1).padStart(3, '0')}.webp`;
 const canvas = document.getElementById('seq');
 const ctx = canvas.getContext('2d');
@@ -318,10 +325,15 @@ function draw(i) {
   const img = imgs[i];
   if (!img || !img.complete || !img.naturalWidth) return;
   const cw = canvas.width, ch = canvas.height;
-  const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+  // the footage is vertical: full-bleed on phones, a tall panel beside the text on wide screens
+  const panel = cw > ch * 0.9;
+  const rx = panel ? Math.round(cw * 0.48) : 0, rw = cw - rx;
+  if (panel) { ctx.fillStyle = '#14120f'; ctx.fillRect(0, 0, rx, ch); }
+  const s = Math.max(rw / img.naturalWidth, ch / img.naturalHeight);
   const w = img.naturalWidth * s, h = img.naturalHeight * s;
-  const fx = ch > cw ? 0.68 : 0.5; // portrait screens: keep the house in frame
-  ctx.drawImage(img, (cw - w) * fx, (ch - h) / 2, w, h);
+  ctx.save(); ctx.beginPath(); ctx.rect(rx, 0, rw, ch); ctx.clip();
+  ctx.drawImage(img, rx + (rw - w) / 2, (ch - h) / 2, w, h);
+  ctx.restore();
 }
 
 // load first frame fast, then the rest, and report progress
