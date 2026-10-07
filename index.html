@@ -297,7 +297,7 @@ footer{padding:clamp(56px,7vw,96px) var(--pad) 28px;overflow:hidden}
   <div class="foot__word display">Tikur Design</div>
   <div class="foot__bottom label">
     <span>Concept site designed and built by Bereket Mengaw</span>
-    <span>Footage & photos: Mixkit</span>
+    <span>Footage: Pexels · Photos: Mixkit</span>
   </div>
 </footer>
 
@@ -308,7 +308,7 @@ gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- frame sequence ---------- */
-const FRAMES = 176;
+const FRAMES = 181;
 const src = i => `frames/f${String(i + 1).padStart(3, '0')}.webp`;
 const canvas = document.getElementById('seq');
 const ctx = canvas.getContext('2d');
